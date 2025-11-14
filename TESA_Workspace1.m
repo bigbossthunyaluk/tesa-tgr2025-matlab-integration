@@ -14,7 +14,7 @@ waypoints = [ 0 0 0 0;
 %     20  18  -18    1;
 %     32  30  -25    1
 % ];
-% 
+%
 % waypoints = [
 %     0   0    0     0;
 %     -5  8   -10    1;
@@ -22,7 +22,7 @@ waypoints = [ 0 0 0 0;
 %     12  25  -18    1;
 %     25  35  -25    1
 % ];
-% 
+%
 % waypoints = [
 %     0    0    0      0;
 %     8   -6   -6      1;
@@ -30,7 +30,7 @@ waypoints = [ 0 0 0 0;
 %     24  -4   -18     1;
 %     32   8   -25     1
 % ];
-% 
+%
 % waypoints = [
 %     0   0    0     0;
 %     10  0   -6     0;
@@ -38,7 +38,7 @@ waypoints = [ 0 0 0 0;
 %     25  25  -18    1;
 %     25  35  -30    1
 % ];
-% 
+%
 % waypoints = [
 %     0    0     0     0;
 %     12   5    -10    1;
@@ -122,7 +122,7 @@ end
 
 
 % properties of drones
-m = 4.34; 
+m = 4.34;
 g = 9.81;
 dIdt = zeros(3,3);
 I = eye(3,3);
@@ -226,18 +226,20 @@ Mean_Accuracy = mean(Accuracy_t);
 payload = struct();
 payload.droneId = 101;
 payload.realLat = NaN;
-payload.realLong = NaN;
+payload.realLng = NaN;
 payload.realAlt = NaN;
 payload.desireLat = NaN;
-payload.desireLong = NaN;
+payload.desireLng = NaN;
 payload.desireAlt = NaN;
 payload.speed = NaN;
 payload.timeRange = NaN;
 payload.currentTime = NaN;
 payload.meanAccuracy = Mean_Accuracy;
-options = weboptions('MediaType', 'application/json');
-% webwrite("http://192.168.10.181/api/v1/attacks-accuracy", payload, options);
-webwrite('http://localhost:3000/drone-location', payload, options);
+token = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsInN1YiI6ImRiNWNhY2U3LTk2ZDYtNDdlZS1hNTQ0LTQ0NzU3ZmM5ZGVkMyIsImF1ZCI6WyJwZXJtaXNzaW9uOjEwIl0sImV4cCI6MTc2MzAxNDQ4MH0.faVKSq2sJ3TNaNhBBvQW6GcxNxYa4qlIckoHcI6DIhxihl8Uy_PA9xYIPuiVl7ZydlAvgMYeNpfc9HBCKCmHuw';
+header = {'Authorization', ['Bearer ' token]}; % cell array of char vectors
+options = weboptions('MediaType', 'application/json', 'HeaderFields', header);
+webwrite("http://192.168.10.181:8080/api/v1/attack", payload, options);
+% webwrite('http://localhost:3000/drone-location', payload, options);
 
 fprintf('========================================\n');
 fprintf('  Accuracy (Mean): %.4f\n', Mean_Accuracy);
@@ -247,7 +249,7 @@ fprintf('========================================\n');
 % rotor2 = out.yout{3}.Values.Data;
 % rotor3 = out.yout{4}.Values.Data;
 % rotor4 = out.yout{5}.Values.Data;
-% 
+%
 % figure
 % plot(time,rotor1);
 % figure
